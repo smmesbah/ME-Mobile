@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "ME_Mobile",
-    "slug": "ME_Mobile",
+    "name": "ME",
+    "slug": "ME",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/dummy_icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/dummy_splash_screen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
