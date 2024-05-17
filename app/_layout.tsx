@@ -31,10 +31,13 @@ const Header = () => {
 };
 
 export default function RootLayout() {
-
+  const pathname = usePathname();
+  // console.log(pathname);
   return (
     <SafeAreaView>
-      <Header />
+      {
+        pathname === '/auth/login' || pathname === '/auth/register' ? <Header /> : null
+      }
       <Slot />
     </SafeAreaView>
   );
