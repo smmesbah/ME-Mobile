@@ -137,7 +137,7 @@ const Home = () => {
           keyExtractor={(item) => item.key!}
           style={{
             marginTop: 10,
-            height: height * 0.4,
+            height: height * 0.37,
           }}
           contentContainerStyle={{
             gap: 10,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   container3: {
-    marginTop: 20
+    marginTop: 10
   },
   container4: { marginTop: 10, flexDirection: 'row', gap: 20, flexWrap: 'wrap' },
   container5: {
