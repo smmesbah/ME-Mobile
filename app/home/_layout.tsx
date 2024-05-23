@@ -1,16 +1,24 @@
-import { SafeAreaView, StyleSheet, Text } from 'react-native'
-import React from 'react'
-import { Slot, Stack } from 'expo-router'
-import HomeHeader from '@/components/home/HomeHeader'
 import HomeFooter from '@/components/home/HomeFooter'
+import HomeHeader from '@/components/home/HomeHeader'
 import RadialMenu from '@/components/home/RadialMenu'
+import ToDoBottomDrawer from '@/components/home/ToDoBottomDrawer'
+import { Slot } from 'expo-router'
+import React, { useState } from 'react'
+import { StyleSheet } from 'react-native'
 
 const HomeLayout = () => {
+    const [openToDoSheet, setOpenToDoSheet] = useState(false);
     return (
         <>
             <HomeHeader />
             <Slot />
-            <RadialMenu />
+            <RadialMenu 
+                setOpenToDoSheet={setOpenToDoSheet}
+            />
+            <ToDoBottomDrawer 
+                openToDoSheet={openToDoSheet}
+                setOpenToDoSheet={setOpenToDoSheet}
+            />
             <HomeFooter />
         </>
     )

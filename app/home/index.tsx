@@ -8,6 +8,7 @@ import FocusButton from '@/components/ui/buttons/FocusButton'
 import TaskCard from '@/components/home/TaskCard'
 import { TaskCardProps } from '@/components/home/TaskCard'
 import { ScrollView } from 'react-native-virtualized-view'
+import ToDoBottomDrawer from '@/components/home/ToDoBottomDrawer'
 
 const { width, height } = Dimensions.get("screen");
 const Home = () => {

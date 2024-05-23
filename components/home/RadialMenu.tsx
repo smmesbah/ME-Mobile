@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import { Animated, Dimensions, Easing, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Close from '../ui/icons/Close';
 import Plus from '../ui/icons/Plus';
@@ -9,9 +9,13 @@ import TaskAdd from '../ui/icons/TaskAdd';
 import NotesAdd from '../ui/icons/NotesAdd';
 import MicrophoneFilled from '../ui/icons/MicrophoneFilled';
 
+export type RadialMenuProps = {
+    setOpenToDoSheet: Dispatch<SetStateAction<boolean>>;
+};
+
 const { height, width } = Dimensions.get('screen');
 
-const RadialMenu = () => {
+const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [micOn, setMicOn] = useState(false);
     const animatedValue = useState(new Animated.Value(0))[0];
@@ -32,6 +36,10 @@ const RadialMenu = () => {
         setMicOn(prevState => !prevState);
         if (micNewState) {
             startPulse();
+            console.log('Mic is on')
+        }
+        else {
+            console.log("Mic is off")
         }
     }
     const startPulse = () => {
@@ -101,6 +109,7 @@ const RadialMenu = () => {
                 icon={<TaskAdd width={22} height={22} />}
                 translateX={-65}
                 translateY={10}
+                onActionFunc={setOpenToDoSheet}
             />
             <RadialMenuButton
                 animatedValue={animatedValue}
