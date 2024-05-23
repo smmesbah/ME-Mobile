@@ -1,5 +1,5 @@
 import { Animated, Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import Plus from '../icons/Plus';
 
 export type RadialMenuButtonProps = {
@@ -7,19 +7,21 @@ export type RadialMenuButtonProps = {
     icon: React.ReactNode;
     translateX: number;
     translateY: number;
+    onActionFunc?: Dispatch<SetStateAction<boolean>>;
 }
 
-const RadialMenuButton: React.FC<RadialMenuButtonProps> = ({ animatedValue, icon, translateX, translateY }) => {
-    const { width, height } = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
+const RadialMenuButton: React.FC<RadialMenuButtonProps> = ({ animatedValue, icon, translateX, translateY, onActionFunc }) => {
+    const handleClick = () => {
+        if (onActionFunc) {
+            onActionFunc(true);
+        }
+    }
     return (
         <Animated.View
             style={[
+                styles.container1,
                 {
-                    position: 'absolute',
-                    bottom: 0,
-                    top: 0,
-                    justifyContent: 'center',
-                    alignSelf: 'center',
                     transform: [
                         {
                             translateX: animatedValue.interpolate({
@@ -40,27 +42,10 @@ const RadialMenuButton: React.FC<RadialMenuButtonProps> = ({ animatedValue, icon
                             }),
                         }
                     ],
-                    zIndex: -1,
                 }
             ]}
         >
-            <TouchableOpacity style={{
-                backgroundColor: '#173a56',
-                height: width / 12,
-                width: width / 12,
-                borderRadius: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#000',
-                shadowOffset: {
-                    width: 0,
-                    height: 3,
-                },
-                shadowOpacity: 0.6,
-                shadowRadius: 5,
-                elevation: 8,
-            }}>
-
+            <TouchableOpacity style={styles.container2} onPress={handleClick}>
                 {icon}
             </TouchableOpacity>
         </Animated.View>
@@ -69,4 +54,29 @@ const RadialMenuButton: React.FC<RadialMenuButtonProps> = ({ animatedValue, icon
 
 export default RadialMenuButton
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container1: {
+        position: 'absolute',
+        bottom: 0,
+        top: 0,
+        justifyContent: 'center',
+        alignSelf: 'center',
+        zIndex: -1,
+    },
+    container2: {
+        backgroundColor: '#173a56',
+        height: width / 12,
+        width: width / 12,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 5,
+        elevation: 8,
+    }
+})
