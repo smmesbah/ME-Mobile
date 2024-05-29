@@ -12,14 +12,26 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.me.ME",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Microphone access permission needed"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "com.me.ME"
     },
     "web": {
       "bundler": "metro",
@@ -33,10 +45,25 @@
         {
           "calendarPermission": "The app needs to access your calendar."
         }
+      ],
+      [
+        "@react-native-voice/voice",
+        {
+          "microphonePermission": "Allow ME to access the microphone",
+          "speechRecognitionPermission": "Allow ME to securely recognize user speech"
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1b9d10fd-0842-4002-be12-744a4ec432df"
+      }
     }
   }
 }

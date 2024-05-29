@@ -8,6 +8,7 @@ import { Link, router } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Buffer } from 'buffer';
 
 const { width, height } = Dimensions.get("screen");
 const Login = () => {
@@ -15,6 +16,9 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
+
+    const [audioStream, setAudioStream] = useState<any>(null);
+    const [audioData, setAudioData] = useState<any>(null);
 
     // Function to toggle the password visibility state 
     const toggleShowPassword = () => {
@@ -142,6 +146,15 @@ const Login = () => {
                     <Apple />
                     <Text>Continue with Apple</Text>
                 </TouchableOpacity>
+            </View>
+
+            <View style={{
+                marginTop: 20,
+                // alignItems: 'center',
+                gap: 20,
+            }}>
+                <Text>Audio Data: {audioData}</Text>
+                <Text>Audio Stream: {audioStream}</Text>
             </View>
         </ScrollView>
     )

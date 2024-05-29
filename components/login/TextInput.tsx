@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#2A2A2A',
         fontFamily: 'Regular',
-        fontWeight: 400,
+        fontWeight: '400',
     },
     textInputStyle: {
         height: 50,

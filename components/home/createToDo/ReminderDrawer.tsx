@@ -261,5 +261,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingHorizontal: 40,
     },
-    text3: { fontSize: 12, fontWeight: 400 },
+    text3: { fontSize: 12, fontWeight: '400' },
 })

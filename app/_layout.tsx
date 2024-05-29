@@ -25,7 +25,7 @@ const Header = () => {
           </TouchableOpacity>
         )
       }
-      <Text style={{ color: '#000', fontSize: 20, fontWeight: 500, }}>{headerName}</Text>
+      <Text style={{ color: '#000', fontSize: 20, fontWeight: '500', }}>{headerName}</Text>
     </View>
   );
 };

@@ -300,6 +300,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingHorizontal: 40,
     },
-    text3: { fontSize: 12, fontWeight: 400 },
+    text3: { fontSize: 12, fontWeight: '400' },
     text4: { fontSize: 20, fontWeight: '500' }
 })

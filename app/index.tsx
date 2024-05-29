@@ -25,7 +25,7 @@ export default function Index() {
         }
       } else {
         setLoading(false);
-        router.replace("/auth/login");
+        router.replace("/picoVoice");
       }
     } catch (error: any) {
       console.error("Error while decoding JWT token:", error);
