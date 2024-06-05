@@ -27,6 +27,8 @@
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
     "expo": "~51.0.2",
+    "expo-asset": "^10.0.7",
+    "expo-av": "^14.0.5",
     "expo-calendar": "~13.0.5",
     "expo-constants": "~16.0.1",
     "expo-font": "~12.0.4",
@@ -50,7 +52,8 @@
     "react-native-svg": "^15.2.0",
     "react-native-virtualized-view": "^1.0.0",
     "react-native-web": "~0.19.10",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "whisper.rn": "^0.3.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
