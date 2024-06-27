@@ -9,6 +9,7 @@ export default function Index() {
 
   useEffect(() => {
     checkSession();
+    // router.replace('/home')
   }, [])
 
   // check user already logged in or not
@@ -25,7 +26,7 @@ export default function Index() {
         }
       } else {
         setLoading(false);
-        router.replace("/picoVoice");
+        router.replace("/voiceTranscription");
       }
     } catch (error: any) {
       console.error("Error while decoding JWT token:", error);

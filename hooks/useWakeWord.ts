@@ -10,7 +10,7 @@ const useWakeWord = () => {
     if (keywordIndex === 0) {
       setWordDetected("JARVIS");
     } else if (keywordIndex === 1) {
-      setWordDetected("Stop");
+      setWordDetected("BLUEBERRY");
     } else if (keywordIndex === 2) {
       setWordDetected("Alexa");
     }
@@ -19,7 +19,7 @@ const useWakeWord = () => {
   const initializePorcupine = useCallback(async () => {
     try {
       const manager = await PorcupineManager.fromBuiltInKeywords(
-        "+m3tRxGHfcWGJIEb52FqknURYf6VVPSIa2euDopcOZwRc6ErYfh12A==",
+        "ba7DDKlkWxGkWSnflnJxD45cOgY9SqasO1f7TPwUeXOoWcDSx2c3MA==",
         [BuiltInKeywords.JARVIS, BuiltInKeywords.BLUEBERRY, BuiltInKeywords.ALEXA],
         detectionCallback
       );
@@ -38,16 +38,17 @@ const useWakeWord = () => {
     if (porcupineManager) {
       porcupineManager.start();
     }
+    // initializePorcupine()
 
-    // return () => {
-    //   if (porcupineManager) {
-    //     porcupineManager.stop();
-    //     porcupineManager.delete();
-    //   }
-    // };
+    return () => {
+      if (porcupineManager) {
+        // porcupineManager.stop();
+        // porcupineManager.delete();
+      }
+    };
   }, [porcupineManager]);
 
-  return { wordDetected, error, porcupineManager };
+  return { wordDetected, error, porcupineManager, initializePorcupine };
 };
 
 export default useWakeWord;
