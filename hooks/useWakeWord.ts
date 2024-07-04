@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { PorcupineManager, BuiltInKeywords } from '@picovoice/porcupine-react-native';
 

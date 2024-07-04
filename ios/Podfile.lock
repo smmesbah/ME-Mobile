@@ -1,14 +1,11 @@
 PODS:
   - boost (1.83.0)
   - DoubleConversion (1.1.6)
-  - EXAV (14.0.5):
-    - ExpoModulesCore
-    - ReactCommon/turbomodule/core
   - EXConstants (16.0.1):
     - ExpoModulesCore
   - Expo (51.0.2):
     - ExpoModulesCore
-  - ExpoAsset (10.0.7):
+  - ExpoAsset (10.0.6):
     - ExpoModulesCore
   - ExpoCalendar (13.0.5):
     - ExpoModulesCore
@@ -75,6 +72,14 @@ PODS:
   - hermes-engine (0.74.1):
     - hermes-engine/Pre-built (= 0.74.1)
   - hermes-engine/Pre-built (0.74.1)
+  - ios-voice-processor (1.1.0)
+  - picovoice-react-native (3.0.2):
+    - React
+  - Porcupine-iOS (3.0.1):
+    - ios-voice-processor (~> 1.1.0)
+  - porcupine-react-native (3.0.2):
+    - Porcupine-iOS (~> 3.0.1)
+    - React
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -1005,6 +1010,9 @@ PODS:
     - React-debug
   - react-native-safe-area-context (4.10.1):
     - React-Core
+  - react-native-voice-processor (1.2.2):
+    - ios-voice-processor (~> 1.1.0)
+    - React-Core
   - React-nativeconfig (0.74.1)
   - React-NativeModulesApple (0.74.1):
     - glog
@@ -1234,6 +1242,11 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
+  - Rhino-iOS (3.0.1):
+    - ios-voice-processor (~> 1.1.0)
+  - rhino-react-native (3.0.2):
+    - React
+    - Rhino-iOS (~> 3.0.1)
   - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNDateTimePicker (8.0.1):
@@ -1314,7 +1327,6 @@ PODS:
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAsset (from `../node_modules/expo-asset/ios`)
@@ -1331,6 +1343,8 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - "picovoice-react-native (from `../node_modules/@picovoice/picovoice-react-native`)"
+  - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1358,6 +1372,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-voice-processor (from `../node_modules/@picovoice/react-native-voice-processor`)"
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -1381,6 +1396,7 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "rhino-react-native (from `../node_modules/@picovoice/rhino-react-native`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -1392,6 +1408,9 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - ios-voice-processor
+    - Porcupine-iOS
+    - Rhino-iOS
     - SocketRocket
     - Starscream
 
@@ -1400,8 +1419,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-  EXAV:
-    :path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   Expo:
@@ -1435,6 +1452,10 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2024-04-25-RNv0.74.1-b54a3a01c531f4f5f1904cb0770033e8b7153dff
+  picovoice-react-native:
+    :path: "../node_modules/@picovoice/picovoice-react-native"
+  porcupine-react-native:
+    :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1485,6 +1506,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-voice-processor:
+    :path: "../node_modules/@picovoice/react-native-voice-processor"
   React-nativeconfig:
     :path: "../node_modules/react-native/ReactCommon"
   React-NativeModulesApple:
@@ -1531,6 +1554,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  rhino-react-native:
+    :path: "../node_modules/@picovoice/rhino-react-native"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
@@ -1551,10 +1576,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
-  EXAV: cb6e8dbcc40873d8a386af357e6c2eb55d6d739e
   EXConstants: 9a008dbf262550884e6280dea95b81b51f65ea6f
   Expo: a615f2b4d9412683c7c63ce20b376a3ab0c8af83
-  ExpoAsset: 9605d71f50ff0554c618d415c991106f13df63f9
+  ExpoAsset: 9b7433ecc5f1b608ccbb823492e062bde944abd2
   ExpoCalendar: 135beb39ea3795f854a4ea287a49f74c9203ce51
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: 331cf28d549edc7b6300d3be19302fc5069d9bb1
@@ -1568,6 +1592,10 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: 16b8530de1b383cdada1476cf52d1b52f0692cbc
+  ios-voice-processor: 8e32d7f980a06d392d128ef1cd19cf6ddcaca3c1
+  picovoice-react-native: 735fbd80de86110d40caeb7d7aaa023c0b19b1da
+  Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
+  porcupine-react-native: 8d7374c0fea2fa6ad645139f33150290a56f574e
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
   RCTDeprecation: efb313d8126259e9294dc4ee0002f44a6f676aba
   RCTRequired: f49ea29cece52aee20db633ae7edc4b271435562
@@ -1593,6 +1621,7 @@ SPEC CHECKSUMS:
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
   react-native-safe-area-context: dcab599c527c2d7de2d76507a523d20a0b83823d
+  react-native-voice-processor: 6f8e5236d1a370be02aa87da8e34aa26506678df
   React-nativeconfig: b0073a590774e8b35192fead188a36d1dca23dec
   React-NativeModulesApple: df46ff3e3de5b842b30b4ca8a6caae6d7c8ab09f
   React-perflogger: 3d31e0d1e8ad891e43a09ac70b7b17a79773003a
@@ -1616,6 +1645,8 @@ SPEC CHECKSUMS:
   React-runtimescheduler: e2152ed146b6a35c07386fc2ac4827b27e6aad12
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
+  Rhino-iOS: 4eeb02b38696907b28dd6f5dfa3a8f25355554ca
+  rhino-react-native: c81671ddc7ead256db11f7457261ee193ad0ebde
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNDateTimePicker: b6a9b35a785ecbe12b4e7d6de5439d0aa4614146
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7

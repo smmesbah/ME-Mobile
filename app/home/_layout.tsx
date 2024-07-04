@@ -4,14 +4,15 @@ import RadialMenu from '@/components/home/RadialMenu'
 import ToDoBottomDrawer from '@/components/home/ToDoBottomDrawer'
 import { Slot } from 'expo-router'
 import React, { useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, SafeAreaView, TouchableWithoutFeedback } from 'react-native'
 
 const HomeLayout = () => {
     const [openToDoSheet, setOpenToDoSheet] = useState(false);
+    
     return (
         <>
             <HomeHeader />
-            <Slot />
+            <Slot/>
             <RadialMenu 
                 setOpenToDoSheet={setOpenToDoSheet}
             />

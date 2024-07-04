@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, Dispatch, SetStateAction } from 'react'
 import SearchOutline from '@/components/ui/icons/SearchOutline'
 import WorkSpaceCard from '@/components/home/WorkSpaceCard'
 import TaskOutline from '@/components/ui/icons/TaskOutline'
