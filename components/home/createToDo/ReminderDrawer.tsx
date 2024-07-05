@@ -28,6 +28,11 @@ const ReminderDrawer: React.FC<ReminderDrawerProps> = ({
     const timeZoneOffsetInHours = moment().utcOffset() / 60 * -1;
     // const eventTimeAfterAddingOffset = eventTime ? moment(eventTime).add(timeZoneOffsetInHours, 'hours').toDate() : new Date();
     useEffect(() => {
+        if(reminderTime){
+            handleReminderTimeEnable();
+        }
+    },[])
+    useEffect(() => {
         const timeZoneOffsetInHours = moment().utcOffset() / 60 * -1;
         if (isReminderTimeEnable){
             setReminderTime(eventTime === undefined ? new Date() : moment(eventTime).add(timeZoneOffsetInHours, 'hours').toDate());

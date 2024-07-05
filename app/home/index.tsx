@@ -1,5 +1,5 @@
 import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState, Dispatch, SetStateAction } from 'react'
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
 import SearchOutline from '@/components/ui/icons/SearchOutline'
 import WorkSpaceCard from '@/components/home/WorkSpaceCard'
 import TaskOutline from '@/components/ui/icons/TaskOutline'
@@ -7,62 +7,98 @@ import Notes from '@/components/ui/icons/Notes'
 import FocusButton from '@/components/ui/buttons/FocusButton'
 import TaskCard from '@/components/home/TaskCard'
 import { TaskCardProps } from '@/components/home/TaskCard'
+import axios from 'axios'
 import { ScrollView } from 'react-native-virtualized-view'
 import ToDoBottomDrawer from '@/components/home/ToDoBottomDrawer'
 
 const { width, height } = Dimensions.get("screen");
 const Home = () => {
   const [focus, setFocus] = useState<string>('In Progress');
-  const taskData: TaskCardProps[] = [
-    {
-      taskType: 'Design',
-      taskTitle: 'Hello There',
-      progress: 50,
-      startDate: '12 Jan 2024',
-      startTime: '12:00PM',
-      endDate: '12 Jan 2024',
-      endTime: '12:30PM',
-      priority: 'High',
-      redirectUrl: '/',
-      key: '1',
-    },
-    {
-      taskType: 'Design',
-      taskTitle: 'Hello There',
-      progress: 50,
-      startDate: '12 Jan 2024',
-      startTime: '12:00PM',
-      endDate: '12 Jan 2024',
-      endTime: '12:30PM',
-      priority: 'High',
-      redirectUrl: '/',
-      key: '2',
-    },
-    {
-      taskType: 'Design',
-      taskTitle: 'Hello There',
-      progress: 50,
-      startDate: '12 Jan 2024',
-      startTime: '12:00PM',
-      endDate: '12 Jan 2024',
-      endTime: '12:30PM',
-      priority: 'High',
-      redirectUrl: '/',
-      key: '3',
-    },
-    {
-      taskType: 'Design',
-      taskTitle: 'Hello There',
-      progress: 50,
-      startDate: '12 Jan 2024',
-      startTime: '12:00PM',
-      endDate: '12 Jan 2024',
-      endTime: '12:30PM',
-      priority: 'High',
-      redirectUrl: '/',
-      key: '4',
-    },
-  ];
+  const [taskList, setTaskList] = useState<TaskCardProps[]>([]);
+  const [filterTaskList, setFilterTaskList] = useState<TaskCardProps[]>([]);
+  // const taskData: TaskCardProps[] = [
+  //   {
+  //     taskType: 'Design',
+  //     taskTitle: 'Hello There',
+  //     progress: 50,
+  //     startDate: '12 Jan 2024',
+  //     startTime: '12:00PM',
+  //     endDate: '12 Jan 2024',
+  //     endTime: '12:30PM',
+  //     priority: 'High',
+  //     redirectUrl: '/',
+  //     key: '1',
+  //   },
+  //   {
+  //     taskType: 'Design',
+  //     taskTitle: 'Hello There',
+  //     progress: 50,
+  //     startDate: '12 Jan 2024',
+  //     startTime: '12:00PM',
+  //     endDate: '12 Jan 2024',
+  //     endTime: '12:30PM',
+  //     priority: 'High',
+  //     redirectUrl: '/',
+  //     key: '2',
+  //   },
+  //   {
+  //     taskType: 'Design',
+  //     taskTitle: 'Hello There',
+  //     progress: 50,
+  //     startDate: '12 Jan 2024',
+  //     startTime: '12:00PM',
+  //     endDate: '12 Jan 2024',
+  //     endTime: '12:30PM',
+  //     priority: 'High',
+  //     redirectUrl: '/',
+  //     key: '3',
+  //   },
+  //   {
+  //     taskType: 'Design',
+  //     taskTitle: 'Hello There',
+  //     progress: 50,
+  //     startDate: '12 Jan 2024',
+  //     startTime: '12:00PM',
+  //     endDate: '12 Jan 2024',
+  //     endTime: '12:30PM',
+  //     priority: 'High',
+  //     redirectUrl: '/',
+  //   },
+  // ];
+
+  useEffect(() => {
+    getTaskData();
+  }, []);
+
+  const getTaskData = async() => {
+    try {
+      // console.log("Fetching data")
+      const user_id = "qwerty";
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_BACKEND_URL}/todo/${user_id}`)
+      const data = response.data;
+      // console.log(data)
+      setTaskList(data);
+      // console.log(dataList)
+      const filteredData = data.filter((item:any) => {
+        return item.label === focus;
+      })
+      setFilterTaskList(filteredData);
+    }catch(error) {
+      console.log(error)
+    }
+  }
+
+  const handleFocus = (focus: string) => {
+    console.log("focus: ", focus);
+    setFocus(focus);
+    const filteredData = taskList.filter((item) => {
+      // console.log(item.label, focus)
+      return item.label === focus;
+    });
+    // console.log(filteredData)
+    setFilterTaskList(filteredData)
+  }
+
   return (
     <SafeAreaView style={styles.container2}>
 
@@ -83,7 +119,7 @@ const Home = () => {
         <View style={styles.container4}>
           <WorkSpaceCard
             title="Tasks"
-            taskCount={`${25} tasks`}
+            taskCount={`${taskList.length} tasks`}
             icon={<TaskOutline width={30} height={30} />}
 
           />
@@ -105,44 +141,50 @@ const Home = () => {
           <FocusButton
             label="In Progress"
             focus={focus}
-            onPressFunc={setFocus}
+            onPressFunc={handleFocus}
           />
           <FocusButton
             label="To Do"
             focus={focus}
-            onPressFunc={setFocus}
+            onPressFunc={handleFocus}
           />
           <FocusButton
             label="Completed"
             focus={focus}
-            onPressFunc={setFocus}
+            onPressFunc={handleFocus}
           />
         </View>
 
         {/* Task section */}
         <FlatList
-          data={taskData}
-          renderItem={({ item }) => (
+          data={filterTaskList}
+          renderItem={({ item, index }) => (
             <TaskCard
-              taskType={item.taskType}
+              taskType={item.taskType? item.taskType: "Design"}
               taskTitle={item.taskTitle}
               progress={item.progress}
               startDate={item.startDate}
-              startTime={item.startTime}
+              startTime={item.startTime? item.startTime: ""}
               endDate={item.endDate}
-              endTime={item.endTime}
+              endTime={item.endTime? item.endTime: ""}
               priority={item.priority}
               redirectUrl={item.redirectUrl}
+              taskColor={item.taskColor}
+              label={item.label}
+              reminderTime={item.reminderTime}
+              id={item.id}
+              getTaskData={getTaskData}
             />
           )}
-          keyExtractor={(item) => item.key!}
+          keyExtractor={(item,index)=>index.toString()}
           style={{
             marginTop: 10,
-            height: height * 0.37,
+            height: height * 0.37
           }}
           contentContainerStyle={{
             gap: 10,
           }}
+          ListFooterComponent={<View style={{height: height*0.06}}/>}
         />
       </View>
     </SafeAreaView>

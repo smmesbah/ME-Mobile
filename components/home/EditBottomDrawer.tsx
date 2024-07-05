@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Close from "../ui/icons/Close";
 import TextInputWithTextLength from "./createToDo/TextInputWithTextLength";
 import CalenderOutline from "../ui/icons/Calender1";
@@ -26,8 +26,21 @@ import Label from "../ui/icons/Label";
 import LabelDrawer from "./createToDo/LabelDrawer";
 
 export type ToDoBottomDrawerProps = {
-  openToDoSheet: boolean;
-  setOpenToDoSheet: Dispatch<SetStateAction<boolean>>;
+  openEditSheet: boolean;
+  setOpenEditSheet: Dispatch<SetStateAction<boolean>>;
+  title: string;
+  color: string;
+  taskPriority: "High" | "Medium" | "Low";
+  taskTag: string;
+  startDate: string;
+  endDate: string;
+  taskStartTime: string;
+  taskEndTime: string;
+  taskLabel: string;
+  taskReminderTime: string;
+  id:String;
+  getTaskData: () => void;
+  setOpenEdit: Dispatch<SetStateAction<boolean>>;
 };
 
 const colors = [
@@ -40,35 +53,66 @@ const colors = [
   "#F68BA2",
 ];
 
-const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
-  openToDoSheet,
-  setOpenToDoSheet,
+const EditBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
+  openEditSheet,
+  setOpenEditSheet,
+  title,
+  color,
+  taskPriority,
+  taskTag,
+  taskLabel,
+  startDate,
+  endDate,
+  taskStartTime,
+  taskEndTime,
+  taskReminderTime,
+  id,
+  getTaskData,
+  setOpenEdit
 }) => {
+  const date = moment(new Date(startDate).toISOString().slice(0, 10)).add(1, "days");
+  const today = moment().startOf("day");
+  const tomorrow = moment().add(1, "days").startOf("day");
+  let formattedDate;
+  if (date.isSame(today, "day")) {
+    formattedDate = "Today";
+  } else if (date.isSame(tomorrow, "day")) {
+    formattedDate = "Tomorrow";
+  } else {
+    formattedDate = date.format("MMMM D, YYYY");
+  }
   const windowHeight = Dimensions.get("window").height;
-  const [taskTitle, setTaskTitle] = useState<string>("");
-  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [taskTitle, setTaskTitle] = useState<string>(title);
+  const [selectedColor, setSelectedColor] = useState(color);
   const [isSelectDateOpen, setIsSelectDateOpen] = useState<boolean>(false);
   const [isSelectTimeOpen, setIsSelectTimeOpen] = useState<boolean>(false);
-  const [startTime, setStartTime] = useState<Date>();
-  const [endTime, setEndTime] = useState<Date>();
+  const [startTime, setStartTime] = useState<Date | undefined>(
+    taskStartTime ? new Date(taskStartTime) : undefined
+  );
+  const [endTime, setEndTime] = useState<Date | undefined>(
+    taskEndTime ? new Date(taskEndTime) : undefined
+  );
+  const [reminderTime, setReminderTime] = useState<Date | undefined>(
+    taskReminderTime ? new Date(taskReminderTime) : undefined
+  )
   const [isReminderDrawerOpen, setIsReminderDrawerOpen] =
     useState<boolean>(false);
-  const [reminderTime, setReminderTime] = useState<Date | undefined>();
   const [isTagDrawerOpen, setIsTagDrawerOpen] = useState<boolean>(false);
-  const [tag, setTag] = useState<string | undefined>();
-  const [priority, setPriority] = useState<string>();
+  const [tag, setTag] = useState<string | undefined>(taskTag);
+  const [priority, setPriority] = useState<string | undefined>(taskPriority);
   const [isPriorityDrawerOpen, setIsPriorityDrawerOpen] =
     useState<boolean>(false);
-  const [label, setLabel] = useState<string>();
+  const [label, setLabel] = useState<string | undefined>(taskLabel);
   const [isLabelDrawerOpen, setIsLabelDrawerOpen] = useState<boolean>(false);
   const timeZoneOffsetInHours = (moment().utcOffset() / 60) * -1;
 
   // Day options
-  const [selectedDay, setSelectedDay] = useState<string>("");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
+  const [selectedDay, setSelectedDay] = useState<string>(formattedDate);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(startDate? new Date(startDate): undefined);
 
   const handleToDoCreateClick = async () => {
-    // setOpenToDoSheet(false);
+    // setOpenEditSheet(false);
+    console.log(id)
     try {
       // check everything is filled or not
       if (taskTitle === "") {
@@ -97,19 +141,20 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
         priority: priority ? priority : "Low",
         redirectURL: "/",
       };
-      
-      const response = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/todo`,taskInfo)
-      if(response.data.status === "success"){
-        console.log("todo created")
-        const res = await axios.post(
-          `${process.env.EXPO_PUBLIC_BACKEND_URL}/history`,
-          { user_id: "qwerty", description: JSON.stringify(taskInfo) }
-        );
-        if (res.data.status === "success") {
-          console.log("history created")
-          alert("Task created successfully");
-        }
+    //   console.log(selectedDate)
+    //   console.log(JSON.stringify(taskInfo));
+    const response = await axios.put(`${process.env.EXPO_PUBLIC_BACKEND_URL}/todo-update/${id}`,taskInfo)
+    if(response.data.status === "success"){
+      console.log("todo updated")
+      const res = await axios.post(
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/history`,
+        { user_id: "qwerty", description: JSON.stringify(taskInfo) }
+      );
+      if (res.data.status === "success") {
+        console.log("history created")
+        alert("Task updated successfully");
       }
+    }
       // clear all the states
       setTaskTitle("");
       setSelectedColor(colors[0]);
@@ -118,19 +163,21 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
       setEndTime(undefined);
       setReminderTime(undefined);
       setTag(undefined);
-      setPriority(undefined);
-      setLabel(undefined);
 
       // console.log(taskInfo);
-      setOpenToDoSheet(false);
+      setOpenEditSheet(false);
+      getTaskData()
     } catch (error) {
       alert("Error while creating task");
       console.log(error);
     }
   };
+//   useEffect(() => {
+//     setReminderTime(new Date(taskReminderTime))
+//   }, []);
   return (
     <View>
-      <Modal animationType="slide" transparent={true} visible={openToDoSheet}>
+      <Modal animationType="slide" transparent={true} visible={openEditSheet}>
         <View
           style={[
             styles.bottomSheet,
@@ -139,12 +186,12 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
         >
           {/* Top section */}
           <View style={[styles.container1]}>
-            <TouchableOpacity onPress={() => setOpenToDoSheet(false)}>
+            <TouchableOpacity onPress={() => setOpenEditSheet(false)}>
               <Close fillColor={"#000"} />
             </TouchableOpacity>
 
             <TouchableOpacity onPress={handleToDoCreateClick}>
-              <Text style={[styles.text1]}>Create</Text>
+              <Text style={[styles.text1]}>Update</Text>
             </TouchableOpacity>
           </View>
 
@@ -252,14 +299,14 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
             </TouchableOpacity>
 
             {/* <View
-                            style={[styles.container7]}
-                        />
-
-                        <View style={[styles.container6]}>
-                            <Text>
-                                Status
-                            </Text>
-                        </View> */}
+                              style={[styles.container7]}
+                          />
+  
+                          <View style={[styles.container6]}>
+                              <Text>
+                                  Status
+                              </Text>
+                          </View> */}
           </View>
         </View>
 
@@ -305,7 +352,6 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
           priority={priority}
           setPriority={setPriority}
         />
-        {/* Add label drawer */}
         <LabelDrawer
           isLabelDrawerOpen={isLabelDrawerOpen}
           setIsLabelDrawerOpen={setIsLabelDrawerOpen}
@@ -317,7 +363,7 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
   );
 };
 
-export default ToDoBottomDrawer;
+export default EditBottomDrawer;
 
 const styles = StyleSheet.create({
   // ------------------- Container Styles -------------------
