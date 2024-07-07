@@ -80,7 +80,7 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
       }
       const timeZoneOffsetInHours = moment().utcOffset() / 60;
       const taskInfo = {
-        user_id: "qwerty",
+        user_id: "asdfg",
         taskTitle: taskTitle,
         taskColor: selectedColor,
         startDate: selectedDate?.toDateString(),
@@ -103,7 +103,7 @@ const ToDoBottomDrawer: React.FC<ToDoBottomDrawerProps> = ({
         console.log("todo created")
         const res = await axios.post(
           `${process.env.EXPO_PUBLIC_BACKEND_URL}/history`,
-          { user_id: "qwerty", description: JSON.stringify(taskInfo) }
+          { user_id: "asdfg", description: JSON.stringify(taskInfo) }
         );
         if (res.data.status === "success") {
           console.log("history created")

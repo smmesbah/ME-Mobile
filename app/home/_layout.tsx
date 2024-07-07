@@ -8,7 +8,6 @@ import { StyleSheet, SafeAreaView, TouchableWithoutFeedback } from 'react-native
 
 const HomeLayout = () => {
     const [openToDoSheet, setOpenToDoSheet] = useState(false);
-    
     return (
         <>
             <HomeHeader />

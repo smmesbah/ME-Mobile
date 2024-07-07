@@ -30,45 +30,92 @@ const SelectDateDrawer: React.FC<SelectDateDrawerProps> = ({
   const [selected, setSelected] = useState("");
   const [calenderWidth, setCalenderWidth] = useState(0);
 
+  // useEffect(() => {
+  //   if (selectedDay) {
+  //     const inputDate = selectedDay;
+
+  //     // Parse the input date string
+  //     const dateParts = inputDate.split(" ");
+  //     const monthName = dateParts[0];
+  //     const day = parseInt(dateParts[1].replace(",", ""), 10);
+  //     const year = parseInt(dateParts[2], 10);
+
+  //     // Map month names to month numbers
+  //     const monthNames = [
+  //       "January",
+  //       "February",
+  //       "March",
+  //       "April",
+  //       "May",
+  //       "June",
+  //       "July",
+  //       "August",
+  //       "September",
+  //       "October",
+  //       "November",
+  //       "December",
+  //     ];
+  //     const month = monthNames.indexOf(monthName) + 1;
+
+  //     // Create a new Date object
+  //     const date = new Date(year, month - 1, day);
+
+  //     // Format the Date object to "YYYY-MM-DD"
+  //   //   const formattedDate = date.toISOString().slice(0, 10);
+  //   const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day+1).padStart(2, '0')}`;
+
+  //       console.log(formattedDate);
+  //     setSelected(formattedDate);
+  //   }
+  // }, []);
+
   useEffect(() => {
     if (selectedDay) {
-      const inputDate = selectedDay;
-
-      // Parse the input date string
-      const dateParts = inputDate.split(" ");
-      const monthName = dateParts[0];
-      const day = parseInt(dateParts[1].replace(",", ""), 10);
-      const year = parseInt(dateParts[2], 10);
-
-      // Map month names to month numbers
-      const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ];
-      const month = monthNames.indexOf(monthName) + 1;
-
-      // Create a new Date object
-      const date = new Date(year, month - 1, day);
-
+      let date;
+    
+      if (selectedDay.toLowerCase() === "today") {
+        date = new Date();
+      } else if (selectedDay.toLowerCase() === "tomorrow") {
+        date = new Date();
+        date.setDate(date.getDate() + 1);
+      } else {
+        const inputDate = selectedDay;
+    
+        // Parse the input date string
+        const dateParts = inputDate.split(" ");
+        const monthName = dateParts[0];
+        const day = parseInt(dateParts[1].replace(",", ""), 10);
+        const year = parseInt(dateParts[2], 10);
+    
+        // Map month names to month numbers
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const month = monthNames.indexOf(monthName) + 1;
+    
+        // Create a new Date object
+        date = new Date(year, month - 1, day);
+      }
+    
       // Format the Date object to "YYYY-MM-DD"
-    //   const formattedDate = date.toISOString().slice(0, 10);
-    const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(day+1).padStart(2, '0')}`;
-
-        console.log(formattedDate);
+      const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+    
+      console.log(formattedDate);
       setSelected(formattedDate);
     }
+    
   }, []);
-
   const handleLayout = (event: LayoutChangeEvent) => {
     setCalenderWidth(event.nativeEvent.layout.width);
   };

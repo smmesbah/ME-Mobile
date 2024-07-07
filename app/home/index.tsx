@@ -1,21 +1,33 @@
-import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react'
-import SearchOutline from '@/components/ui/icons/SearchOutline'
-import WorkSpaceCard from '@/components/home/WorkSpaceCard'
-import TaskOutline from '@/components/ui/icons/TaskOutline'
-import Notes from '@/components/ui/icons/Notes'
-import FocusButton from '@/components/ui/buttons/FocusButton'
-import TaskCard from '@/components/home/TaskCard'
-import { TaskCardProps } from '@/components/home/TaskCard'
-import axios from 'axios'
-import { ScrollView } from 'react-native-virtualized-view'
-import ToDoBottomDrawer from '@/components/home/ToDoBottomDrawer'
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
+import SearchOutline from "@/components/ui/icons/SearchOutline";
+import WorkSpaceCard from "@/components/home/WorkSpaceCard";
+import TaskOutline from "@/components/ui/icons/TaskOutline";
+import Notes from "@/components/ui/icons/Notes";
+import FocusButton from "@/components/ui/buttons/FocusButton";
+import TaskCard from "@/components/home/TaskCard";
+import { TaskCardProps } from "@/components/home/TaskCard";
+import axios from "axios";
+import { ScrollView } from "react-native-virtualized-view";
+import ToDoBottomDrawer from "@/components/home/ToDoBottomDrawer";
+import AllTasks from "@/components/home/AllTasks";
+import * as Speech from "expo-speech";
 
 const { width, height } = Dimensions.get("screen");
 const Home = () => {
-  const [focus, setFocus] = useState<string>('In Progress');
+  const [focus, setFocus] = useState<string>("In Progress");
   const [taskList, setTaskList] = useState<TaskCardProps[]>([]);
   const [filterTaskList, setFilterTaskList] = useState<TaskCardProps[]>([]);
+  const [openAllTasks, setOpenAllTasks] = useState<boolean>(false);
+  const [todayTaskList, setTodayTaskList] = useState<TaskCardProps[]>([]);
   // const taskData: TaskCardProps[] = [
   //   {
   //     taskType: 'Design',
@@ -68,40 +80,80 @@ const Home = () => {
 
   useEffect(() => {
     getTaskData();
+    // getTodayDateString()
   }, []);
+  const getTodayDateString = () => {
+    const today = new Date();
+    const options = {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    };
+    const todayDate = today.toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+    const todayFormattedDate = todayDate.replace(/,/g, "");
+    const dateParts = todayFormattedDate.split(" ");
+    const day = parseInt(dateParts[2], 10); // Convert day to integer to remove leading zero
+    dateParts[2] = day < 10 ? `0${day}` : day.toString(); // Convert day back to string
+    // console.log(dateParts.join(" "));
+    return dateParts.join(" ");
+  };
 
-  const getTaskData = async() => {
+  const getTaskData = async () => {
     try {
       // console.log("Fetching data")
-      const user_id = "qwerty";
-      const response = await axios.get(`${process.env.EXPO_PUBLIC_BACKEND_URL}/todo/${user_id}`)
+      const user_id = "asdfg";
+      const response = await axios.get(
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/todo/${user_id}`
+      );
       const data = response.data;
       // console.log(data)
       setTaskList(data);
-      // console.log(dataList)
-      const filteredData = data.filter((item:any) => {
+      const todayDate = getTodayDateString();
+      const filterTodayTask = data.filter((item: any) => {
+        // console.log(item.startDate, todayDate);
+        return item.startDate === todayDate;
+      });
+      // console.log("Today's task", filterTodayTask);
+      setTodayTaskList(filterTodayTask);
+      const filteredData = filterTodayTask.filter((item: any) => {
         return item.label === focus;
-      })
+      });
       setFilterTaskList(filteredData);
-    }catch(error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   const handleFocus = (focus: string) => {
-    console.log("focus: ", focus);
+    // console.log("focus: ", focus);
     setFocus(focus);
-    const filteredData = taskList.filter((item) => {
+    const filteredData = todayTaskList.filter((item) => {
       // console.log(item.label, focus)
       return item.label === focus;
     });
     // console.log(filteredData)
-    setFilterTaskList(filteredData)
-  }
+    setFilterTaskList(filteredData);
+  };
+
+  const handleOpenAllTasks = () => {
+    setOpenAllTasks(true);
+  };
+
+  const handleOpenAllNotes = async() => {
+    console.log("Open all notes");
+    const thingToSay = "Open all notes";
+    console.log(await Speech.getAvailableVoicesAsync())
+    Speech.speak(thingToSay, {voice: "com.apple.voice.compact.en-AU.karen"})
+  };
 
   return (
     <SafeAreaView style={styles.container2}>
-
       {/* Search bar */}
       <View>
         <View style={styles.container}>
@@ -121,13 +173,14 @@ const Home = () => {
             title="Tasks"
             taskCount={`${taskList.length} tasks`}
             icon={<TaskOutline width={30} height={30} />}
-
+            onPressFunc={handleOpenAllTasks}
           />
           <WorkSpaceCard
             title="Notes"
             taskCount={`${25} notes`}
             icon={<Notes width={30} height={30} />}
-            cardBackgroundColor='#fb5158'
+            cardBackgroundColor="#fb5158"
+            onPressFunc={handleOpenAllNotes}
           />
         </View>
       </View>
@@ -143,11 +196,7 @@ const Home = () => {
             focus={focus}
             onPressFunc={handleFocus}
           />
-          <FocusButton
-            label="To Do"
-            focus={focus}
-            onPressFunc={handleFocus}
-          />
+          <FocusButton label="To Do" focus={focus} onPressFunc={handleFocus} />
           <FocusButton
             label="Completed"
             focus={focus}
@@ -160,13 +209,13 @@ const Home = () => {
           data={filterTaskList}
           renderItem={({ item, index }) => (
             <TaskCard
-              taskType={item.taskType? item.taskType: "Design"}
+              taskType={item.taskType ? item.taskType : "Design"}
               taskTitle={item.taskTitle}
               progress={item.progress}
               startDate={item.startDate}
-              startTime={item.startTime? item.startTime: ""}
+              startTime={item.startTime ? item.startTime : ""}
               endDate={item.endDate}
-              endTime={item.endTime? item.endTime: ""}
+              endTime={item.endTime ? item.endTime : ""}
               priority={item.priority}
               redirectUrl={item.redirectUrl}
               taskColor={item.taskColor}
@@ -176,34 +225,40 @@ const Home = () => {
               getTaskData={getTaskData}
             />
           )}
-          keyExtractor={(item,index)=>index.toString()}
+          keyExtractor={(item, index) => index.toString()}
           style={{
             marginTop: 10,
-            height: height * 0.37
+            height: height * 0.37,
           }}
           contentContainerStyle={{
             gap: 10,
           }}
-          ListFooterComponent={<View style={{height: height*0.06}}/>}
+          ListFooterComponent={<View style={{ height: height * 0.06 }} />}
         />
       </View>
+      <AllTasks
+        taskList={taskList}
+        getTaskData={getTaskData}
+        openAllTasks={openAllTasks}
+        setOpenAllTasks={setOpenAllTasks}
+      />
     </SafeAreaView>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     left: 10,
     top: 0,
     bottom: 0,
-    justifyContent: 'center',
+    justifyContent: "center",
     zIndex: 1,
   },
   container1: {
-    backgroundColor: '#f1f1f1',
+    backgroundColor: "#f1f1f1",
     paddingVertical: 15,
     borderRadius: 10,
     paddingLeft: 40,
@@ -214,19 +269,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   container3: {
-    marginTop: 10
+    marginTop: 10,
   },
-  container4: { marginTop: 10, flexDirection: 'row', gap: 20, flexWrap: 'wrap' },
+  container4: {
+    marginTop: 10,
+    flexDirection: "row",
+    gap: 20,
+    flexWrap: "wrap",
+  },
   container5: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 10
-
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
   },
   // ------------------- Text Styles -------------------
   text: {
     marginVertical: 10,
     fontSize: 18,
-    fontWeight: 'bold'
-  }
-})
+    fontWeight: "bold",
+  },
+});

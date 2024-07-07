@@ -40,6 +40,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - ExpoSpeech (12.0.2):
+    - ExpoModulesCore
   - ExpoSystemUI (3.0.4):
     - ExpoModulesCore
   - ExpoWebBrowser (13.0.3):
@@ -1336,6 +1338,7 @@ DEPENDENCIES:
   - ExpoHead (from `../node_modules/expo-router/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSpeech (from `../node_modules/expo-speech/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
@@ -1437,6 +1440,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSpeech:
+    :path: "../node_modules/expo-speech/ios"
   ExpoSystemUI:
     :path: "../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
@@ -1585,6 +1590,7 @@ SPEC CHECKSUMS:
   ExpoHead: 0c169e19f59dc46d6c7d2617866532589d225c72
   ExpoKeepAwake: f3a7b0ff4b4911957264dad8cb584ef688326a22
   ExpoModulesCore: 4c5576eec261d09549d78b751ccd62d94d4506ac
+  ExpoSpeech: 258ea713923eb70ef63d3bdb14f47a462d0b6f0e
   ExpoSystemUI: b5ecc4b6781b6369fb8b3a0903bea36fae3dd090
   ExpoWebBrowser: 7595ccac6938eb65b076385fd23d035db9ecdc8e
   EXSplashScreen: d439ca817211886dc80a00f3761e3b6d861d7205

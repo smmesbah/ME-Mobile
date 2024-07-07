@@ -31,6 +31,7 @@ import useWakeWord from "@/hooks/useWakeWord";
 import * as VoiceTranscription from "@smmesbah/voice-transcription";
 import axios from "axios";
 import { transform } from "@babel/core";
+import * as Speech from "expo-speech";
 
 export type RadialMenuProps = {
   setOpenToDoSheet: Dispatch<SetStateAction<boolean>>;
@@ -79,6 +80,10 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
     }
   }, [wordDetected]);
 
+  // useEffect(() => {
+  //   Speech.speak("Hello, I am Jarvis. How can I help you?");
+  // }, []);
+
   const handleStartRecording = async () => {
     await VoiceTranscription.startRecording();
   };
@@ -100,8 +105,10 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
       const response = await axios.get(
         `${process.env.EXPO_PUBLIC_BACKEND_URL}/vector_search?query=${transcription}`
       );
-      console.log(response.data);
-      setAnswer(response.data); // Log or handle the response data from the backend
+      // console.log(response.data);
+      setAnswer(response.data);
+      Speech.speak(response.data);
+       // Log or handle the response data from the backend
       setLoading(false);
     } catch (err) {
       console.log(err);
@@ -219,7 +226,10 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
         </Animated.View>
       ) : answerOpen ? (
         <TouchableOpacity
-          onPress={()=>setAnswerOpen(false)}
+          onPress={()=>{
+            setAnswerOpen(false)
+            Speech.stop()
+          }}
         //   onLongPress={toggleMenuToMic}
           activeOpacity={0.8}
         >
