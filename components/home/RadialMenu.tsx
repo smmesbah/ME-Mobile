@@ -52,6 +52,27 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
   const answerRef = useRef<View>(null);
+  var ws = React.useRef(
+    new WebSocket(
+      `ws://127.0.0.1:8000/vector_search`
+    )
+  ).current;
+
+  useEffect(() => {
+    ws.onopen = () => {
+      console.log("connected");
+    };
+    ws.onclose = () => {
+      console.log("disconnected");
+    };
+    ws.onerror = (e) => {
+      console.log(e);
+    };
+    // ws.onmessage = (e) => {
+    //   console.log("The data: ", e.data);
+    //   setAnswer(answer+e.data);
+    // }
+  }, []);
 
   useEffect(() => {
     const transcriptionSubscription = VoiceTranscription.addChangeListener(
@@ -91,8 +112,9 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
   const handleStopRecording = async () => {
     VoiceTranscription.stopRecording();
     // handleTranscription();
+    // setAnswerOpen(true);
     if (transcription.length !== 0) {
-        console.log("transcription: ", transcription)
+      console.log("transcription: ", transcription);
       setAnswerOpen(true);
       handleTranscription();
     }
@@ -101,18 +123,38 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
 
   const handleTranscription = async () => {
     try {
-      setLoading(true);
-      const response = await axios.get(
-        `${process.env.EXPO_PUBLIC_BACKEND_URL}/vector_search?query=${transcription}`
-      );
-      // console.log(response.data);
-      setAnswer(response.data);
-      Speech.speak(response.data);
-       // Log or handle the response data from the backend
+      setLoading(true)
+      setAnswer("")
+      // const response = await axios.get(
+      //   `${process.env.EXPO_PUBLIC_BACKEND_URL}/vector_search?query=${transcription}`,
+      //   { responseType: "stream" }
+      // );
+      // Send transcription to the WebSocket server
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(transcription);
+        let data = ""
+      ws.onmessage = (e) => {
+        if(e.data !=="End of response"){
+          data = data + e.data;
+        }
+        // setAnswer(prev => prev + e.data)
+        if(e.data === "End of response"){
+          Speech.speak(data)
+        }
+        else setAnswer(prev => prev + e.data)
+      }
+      } else {
+        console.error("WebSocket is not open");
+        setLoading(false);
+        return;
+      } 
+      // ws.send(transcription);
+      
       setLoading(false);
     } catch (err) {
       console.log(err);
       setLoading(false);
+      setAnswer("Something went wrong. Please try again")
     }
   };
 
@@ -136,9 +178,9 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
     } else {
       handleStopRecording();
       console.log("Mic is off");
-    //   if (transcription.length === 0) {
-    //     setAnswerOpen(true);
-    //   }
+      //   if (transcription.length === 0) {
+      //     setAnswerOpen(true);
+      //   }
     }
   };
   const startPulse = () => {
@@ -190,7 +232,7 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
         <View style={styles.answer_view} ref={answerRef}>
           <Text style={styles.answer_title}>Title</Text>
 
-          {loading ? (
+          {answer==="" ? (
             <ActivityIndicator size="large" color="#0000ff" />
           ) : (
             <Text style={styles.answer_description}>{answer}</Text>
@@ -226,16 +268,15 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
         </Animated.View>
       ) : answerOpen ? (
         <TouchableOpacity
-          onPress={()=>{
-            setAnswerOpen(false)
-            Speech.stop()
+          onPress={() => {
+            setAnswerOpen(false);
+            setAnswer("")
+            Speech.stop();
           }}
-        //   onLongPress={toggleMenuToMic}
+          //   onLongPress={toggleMenuToMic}
           activeOpacity={0.8}
         >
-          <Animated.View
-            style={[styles.button]}
-          >
+          <Animated.View style={[styles.button]}>
             <Close width={28} height={28} />
           </Animated.View>
         </TouchableOpacity>
