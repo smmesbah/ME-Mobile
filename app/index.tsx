@@ -25,7 +25,8 @@ export default function Index() {
         }
       } else {
         setLoading(false);
-        router.replace("/auth/login");
+        // router.replace("/auth/login");
+        router.replace("/home");
       }
     } catch (error: any) {
       console.error("Error while decoding JWT token:", error);
