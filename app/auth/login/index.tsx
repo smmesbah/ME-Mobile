@@ -24,6 +24,7 @@ const Login = () => {
     // Function to handle the login process
     const handleLogin = async () => {
         try {
+            setLoading(true);
             // check if all fields are filled
             if (username === '' || password === '') {
                 alert('Please fill all fields');
@@ -38,7 +39,7 @@ const Login = () => {
             const res = await axios.post(`${process.env.EXPO_PUBLIC_BACKEND_URL}/auth/login`, loginInfo);
             if (res.data.success) {
                 // Add a snack here
-                console.log(res.data)
+                // console.log(res.data)
                 // console.log(res.data.message);
 
                 // save the token in the local storage
@@ -50,14 +51,17 @@ const Login = () => {
 
                 // redirect to the home screen
                 router.replace('/home');
+                setLoading(false);
             }
             return;
         } catch (error: any) {
             if (error.response) {
                 const status = error.response.status;
                 if (status === 401) {
+                    setLoading(false)
                     alert('Invalid credentials');
                 } else if (status === 404) {
+                    setLoading(false)
                     alert('User not registered. Please register first');
                 }
             } else {
@@ -109,6 +113,7 @@ const Login = () => {
                     onPressFunc={handleLogin}
                     fillColor='#000'
                     textColor='#fff'
+                    state={loading ? 'loading' : 'active'}
                 />
             </View>
 

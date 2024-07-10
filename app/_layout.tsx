@@ -1,6 +1,6 @@
 import LeftArrow from "@/components/ui/icons/LeftArrow";
-import { Slot, Stack, router, usePathname } from "expo-router";
-import { View, Text, SafeAreaView, Dimensions, Touchable, TouchableOpacity, StyleSheet } from "react-native";
+import { Slot, router, usePathname } from "expo-router";
+import { Dimensions, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -31,12 +31,22 @@ const Header = () => {
 };
 
 export default function RootLayout() {
-
+  const pathname = usePathname();
   return (
-    <SafeAreaView>
-      <Header />
-      <Slot />
-    </SafeAreaView>
+    <>
+      <SafeAreaView style={{ flex: 1 }}>
+        {
+          pathname === '/auth/login' || pathname === '/auth/register' ? <Header /> : null
+        }
+        <Slot />
+        {/* <View style={{backgroundColor: 'red'}}>
+          <Text>Hello</Text>
+        </View>
+        <View style={{backgroundColor: 'red'}}>
+          <Text>Hellooooo</Text>
+        </View> */}
+      </SafeAreaView>
+    </>
   );
 }
 
