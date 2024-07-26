@@ -1,10 +1,12 @@
 import {
   Dimensions,
   FlatList,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
@@ -20,6 +22,9 @@ import { ScrollView } from "react-native-virtualized-view";
 import ToDoBottomDrawer from "@/components/home/ToDoBottomDrawer";
 import AllTasks from "@/components/home/AllTasks";
 import * as Speech from "expo-speech";
+import { router } from "expo-router";
+import CallManager from "../../CallManager"
+import * as RecieveCalls from "../../modules/receive-incoming-call/index"
 
 const { width, height } = Dimensions.get("screen");
 const Home = () => {
@@ -146,11 +151,22 @@ const Home = () => {
   };
 
   const handleOpenAllNotes = async() => {
-    console.log("Open all notes");
-    const thingToSay = "Open all notes";
-    console.log(await Speech.getAvailableVoicesAsync())
-    Speech.speak(thingToSay, {voice: "com.apple.voice.compact.en-AU.karen"})
+    router.push("/call-receive")
   };
+
+  const handleReceivePhoneCall = async () => {
+    await RecieveCalls.receiveIncomingCalls()
+  }
+
+  useEffect(() => {
+    const ReportCall = async () => {
+      const id = "26fac8de-391a-4a43-b9dd-3e5912733c23"
+      const handle = "+8801826700175"
+      CallManager.reportIncomingCall(id, handle)
+    }
+    ReportCall()
+  }, []);
+
 
   return (
     <SafeAreaView style={styles.container2}>
@@ -167,6 +183,9 @@ const Home = () => {
 
       {/* Workspace */}
       <View style={styles.container3}>
+        <Pressable onPress={handleReceivePhoneCall}>
+          <Text>Press me for receiving phone call</Text>
+        </Pressable>
         <Text style={styles.text}>Your workspace</Text>
         <View style={styles.container4}>
           <WorkSpaceCard

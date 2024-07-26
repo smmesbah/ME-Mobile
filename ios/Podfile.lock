@@ -98,6 +98,8 @@ PODS:
     - DoubleConversion
     - fmt (= 9.1.0)
     - glog
+  - RCTCallDetection (1.9.0):
+    - React
   - RCTDeprecation (0.74.1)
   - RCTRequired (0.74.1)
   - RCTTypeSafety (0.74.1):
@@ -1244,11 +1246,15 @@ PODS:
     - React-logger (= 0.74.1)
     - React-perflogger (= 0.74.1)
     - React-utils (= 0.74.1)
+  - ReceiveIncomingCall (1.0.0):
+    - ExpoModulesCore
   - Rhino-iOS (3.0.1):
     - ios-voice-processor (~> 1.1.0)
   - rhino-react-native (3.0.2):
     - React
     - Rhino-iOS (~> 3.0.1)
+  - RNCallKeep (4.3.14):
+    - React
   - RNCAsyncStorage (1.23.1):
     - React-Core
   - RNDateTimePicker (8.0.1):
@@ -1350,6 +1356,7 @@ DEPENDENCIES:
   - "porcupine-react-native (from `../node_modules/@picovoice/porcupine-react-native`)"
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
+  - RCTCallDetection (from `../node_modules/react-native-call-detection`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
   - RCTRequired (from `../node_modules/react-native/Libraries/Required`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -1399,7 +1406,9 @@ DEPENDENCIES:
   - React-runtimescheduler (from `../node_modules/react-native/ReactCommon/react/renderer/runtimescheduler`)
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - ReceiveIncomingCall (from `../modules/receive-incoming-call/ios`)
   - "rhino-react-native (from `../node_modules/@picovoice/rhino-react-native`)"
+  - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
@@ -1463,6 +1472,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@picovoice/porcupine-react-native"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
+  RCTCallDetection:
+    :path: "../node_modules/react-native-call-detection"
   RCTDeprecation:
     :path: "../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation"
   RCTRequired:
@@ -1559,8 +1570,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/react/utils"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  ReceiveIncomingCall:
+    :path: "../modules/receive-incoming-call/ios"
   rhino-react-native:
     :path: "../node_modules/@picovoice/rhino-react-native"
+  RNCallKeep:
+    :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNDateTimePicker:
@@ -1603,6 +1618,7 @@ SPEC CHECKSUMS:
   Porcupine-iOS: 6d69509fa587f3ac0be1adfefb48e0c6ce029fff
   porcupine-react-native: 8d7374c0fea2fa6ad645139f33150290a56f574e
   RCT-Folly: 02617c592a293bd6d418e0a88ff4ee1f88329b47
+  RCTCallDetection: c27a0ca2c29d8e8004bebd31353fe1041408e88e
   RCTDeprecation: efb313d8126259e9294dc4ee0002f44a6f676aba
   RCTRequired: f49ea29cece52aee20db633ae7edc4b271435562
   RCTTypeSafety: a11979ff0570d230d74de9f604f7d19692157bc4
@@ -1651,8 +1667,10 @@ SPEC CHECKSUMS:
   React-runtimescheduler: e2152ed146b6a35c07386fc2ac4827b27e6aad12
   React-utils: 3285151c9d1e3a28a9586571fc81d521678c196d
   ReactCommon: f42444e384d82ab89184aed5d6f3142748b54768
+  ReceiveIncomingCall: 36127b720fa555050ef539394e32cfee43c9e96a
   Rhino-iOS: 4eeb02b38696907b28dd6f5dfa3a8f25355554ca
   rhino-react-native: c81671ddc7ead256db11f7457261ee193ad0ebde
+  RNCallKeep: 0cab0ef1e272f5ca19e3d0ea1f041257842844cb
   RNCAsyncStorage: 826b603ae9c0f88b5ac4e956801f755109fa4d5c
   RNDateTimePicker: b6a9b35a785ecbe12b4e7d6de5439d0aa4614146
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
