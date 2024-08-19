@@ -121,6 +121,7 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
     setTranscription("");
   };
 
+  // Function to be executed if the response is todo object that needs to be saved in the database
   const handleTranscription = async () => {
     try {
       setLoading(true)
@@ -139,7 +140,8 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
         }
         // setAnswer(prev => prev + e.data)
         if(e.data === "End of response"){
-          Speech.speak(data)
+          
+          // Speech.speak(data)
         }
         else setAnswer(prev => prev + e.data)
       }
@@ -157,6 +159,47 @@ const RadialMenu: FC<RadialMenuProps> = ({ setOpenToDoSheet }) => {
       setAnswer("Something went wrong. Please try again")
     }
   };
+
+  const 
+
+
+  // Function to be executed if the response needs to be spoken only
+  // const handleTranscription = async () => {
+  //   try {
+  //     setLoading(true)
+  //     setAnswer("")
+  //     // const response = await axios.get(
+  //     //   `${process.env.EXPO_PUBLIC_BACKEND_URL}/vector_search?query=${transcription}`,
+  //     //   { responseType: "stream" }
+  //     // );
+  //     // Send transcription to the WebSocket server
+  //     if (ws.readyState === WebSocket.OPEN) {
+  //       ws.send(transcription);
+  //       let data = ""
+  //     ws.onmessage = (e) => {
+  //       if(e.data !=="End of response"){
+  //         data = data + e.data;
+  //       }
+  //       // setAnswer(prev => prev + e.data)
+  //       if(e.data === "End of response"){
+  //         Speech.speak(data)
+  //       }
+  //       else setAnswer(prev => prev + e.data)
+  //     }
+  //     } else {
+  //       console.error("WebSocket is not open");
+  //       setLoading(false);
+  //       return;
+  //     } 
+  //     // ws.send(transcription);
+      
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //     setLoading(false);
+  //     setAnswer("Something went wrong. Please try again")
+  //   }
+  // };
 
   const toggleMenu = () => {
     setMenuOpen((prevState) => !prevState);
